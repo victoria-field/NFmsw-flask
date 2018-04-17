@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<h1>Login</h1>
+<h2>If you do not have a log in click here and return back to the home screen</h2>
+<button class="ben btn-warning"><a href="/"> Back to home </a></button>
+<form method="POST" action="">
+   
+    <div class="form-group">
+        <label>USERNAME</label>
+        <input type="text" name="username" class="form-control" value={{request.form.username}}>
+    </div>
+    <div class="form-group">
+            <label>PASSWORD</label>
+            <input type="password" name="password" class="form-control" value={{request.form.password}}>
+          
+    </div>
+   
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+{% endblock %}
