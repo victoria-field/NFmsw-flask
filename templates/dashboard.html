@@ -6,32 +6,27 @@
     <p> DASHBOARD some text Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis earum molestiae recusandae facere accusantium. Quod sint voluptas sed! Esse, molestias eaque ad sequi corporis deserunt quibusdam velit iusto nesciunt voluptas.</p>
     <a class="btn btn-success" href="/add_article">Add Article</a>
     <hr>
+</div>
 
     <h3>All articles</h3>
 
-
-     <table class="table table-striped">
-        <tr>
-            <th align="left">id</th>
-            <th align="left">Title</th>
-            <th align="left">link</th>
-            <th align="left">Date</th>
-            <th align="left">Edit</th>
-            <th align="left">Delete</th>
-        </tr>
-        {% for article in articles %}
-        <tr>
-            <td align="left">{{article.id}}</td>
-            <td align="left">{{article.title}}</td>
-            <td align="left">{{article.doc_link}}</td>
-            <td align="left">{{article.create_date}}</td>
-            <td align="left"><a href="edit_article/{{article.id}}" class="btn btn-default">Edit</a></td>
-            <td align="left"><a href="#" class="btn btn-danger ">Delete</a></td>
-                
-        </tr>
+           {% for article in articles %}
+        
+        <div class="card w-75">
+                <div class="card-body">
+                  <h5 class="card-title">{{article.title}}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">{article.id}</h6>
+                  <p class="card-text">{{article.body}}.</p>
+                  <p class="card-text">{{article.create_date}}</p>
+                  <a href="{{ ''.join(['http://', article.doc_link])  }}" class="card-link">click to see the full article</a>
+                  <a href="edit_article/{{article.id}}" class="btn btn-warning">Edit</a>
+                  <a href="#" class="btn btn-danger">Delete</a>
+                </div>
+              </div>
+              <br>
 
         {% endfor %}
 
-    </table>
-</div>
+   
+
 {% endblock %}
