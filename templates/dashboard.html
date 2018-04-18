@@ -4,5 +4,34 @@
 <div class="jumbotron text-center">
     <h1>Dashboard <small>welcome {{session.username}}</small></h1>
     <p> DASHBOARD some text Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis earum molestiae recusandae facere accusantium. Quod sint voluptas sed! Esse, molestias eaque ad sequi corporis deserunt quibusdam velit iusto nesciunt voluptas.</p>
+    <a class="btn btn-success" href="/add_article">Add Article</a>
+    <hr>
+
+    <h3>All articles</h3>
+
+
+     <table class="table table-striped">
+        <tr>
+            <th align="left">id</th>
+            <th align="left">Title</th>
+            <th align="left">link</th>
+            <th align="left">Date</th>
+            <th align="left">Edit</th>
+            <th align="left">Delete</th>
+        </tr>
+        {% for article in articles %}
+        <tr>
+            <td align="left">{{article.id}}</td>
+            <td align="left">{{article.title}}</td>
+            <td align="left">{{article.doc_link}}</td>
+            <td align="left">{{article.create_date}}</td>
+            <td align="left"><a href="edit_article/{{article.id}}" class="btn btn-default">Edit</a></td>
+            <td align="left"><a href="#" class="btn btn-danger ">Delete</a></td>
+                
+        </tr>
+
+        {% endfor %}
+
+    </table>
 </div>
 {% endblock %}
