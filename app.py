@@ -1,5 +1,4 @@
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
-from data import Articles
 from flask_mysqldb import MySQL
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from wtforms.widgets import TextArea
@@ -60,7 +59,15 @@ class ArticleForm(Form):
 # individual article
 @app.route('/article/<string:id>/')
 def article(id):
-    return render_template('article.html', id=id)
+    # Create cursor
+    cur = mysql.connection.cursor()
+
+    # Get article
+    result = cur.execute("SELECT * FROM articles WHERE id = %s", [id])
+
+    article = cur.fetchone()
+
+    return render_template('article.html', article=article)
 
 class RegisterForm(Form):
     name = StringField('Name', [validators.Length(min=1, max=50)])
@@ -204,6 +211,67 @@ def add_article():
         return redirect(url_for('dashboard'))
 
     return render_template('add_article.html', form=form)
+
+    # edit articles route
+@app.route('/edit_article/<string:id>', methods=['GET', 'POST'])
+@is_logged_in
+def edit_article(id):
+    # create cursor
+    cur=mysql.connection.cursor()
+
+    # get article by id
+    result = cur.execute('SELECT * FROM articles WHERE id = %s', [id])
+
+    article = cur.fetchone()
+
+    # get form
+    form = ArticleForm(request.form)
+    
+    form.title.data = article['title']
+    form.body.data = article['body']
+    form.doc_link.data = article['doc_link']
+
+    if request.method == 'POST' and form.validate():
+        title = request.form['title']
+        body = request.form['body']
+        doc_link = form['doc_link']
+
+  
+        # execute
+        cur.execute("UPDATE articles SET title=%s, body=%s, doc_link=%s WHERE id= %s", (title, body, doc_link, id))
+
+        # commit to db
+        mysql.connection.commit()
+
+        #close connection
+        cur.close()
+
+        flash('Article UPDATED', 'success')
+
+        return redirect(url_for('dashboard'))
+
+    return render_template('edit_article.html', form=form)
+
+
+# delete article
+@app.route('/delete_article/<string:id>', methods=['POST'])
+@is_logged_in
+def delete_article(id):
+    # Create cursor
+    cur = mysql.connection.cursor()
+
+    # Execute
+    cur.execute("DELETE FROM articles WHERE id = %s", [id])
+
+    # Commit to DB
+    mysql.connection.commit()
+
+    #Close connection
+    cur.close()
+
+    flash('Article Deleted', 'success')
+
+    return redirect(url_for('dashboard'))
 
 
 # spin up page

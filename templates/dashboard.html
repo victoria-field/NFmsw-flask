@@ -2,25 +2,32 @@
 
 {% block body %}
 <div class="jumbotron text-center">
-    <h1>Dashboard <small>welcome {{session.username}}</small></h1>
-    <p> DASHBOARD some text Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis earum molestiae recusandae facere accusantium. Quod sint voluptas sed! Esse, molestias eaque ad sequi corporis deserunt quibusdam velit iusto nesciunt voluptas.</p>
+    <h1>Welcome {{session.username}},</h1>
+    <h2>to your dashboard</h2>
+    <p> Here you can create, delete and update your posts as well as view your exisiting posts.</p>
     <a class="btn btn-success" href="/add_article">Add Article</a>
     <hr>
 </div>
 
-    <h3>All articles</h3>
+    <h2>All articles</h2>
 
            {% for article in articles %}
         
         <div class="card w-75">
-                <div class="card-body">
-                  <h5 class="card-title">{{article.title}}</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">{article.id}</h6>
-                  <p class="card-text">{{article.body}}.</p>
-                  <p class="card-text">{{article.create_date}}</p>
-                  <a href="{{ ''.join(['http://', article.doc_link])  }}" class="card-link">click to see the full article</a>
-                  <a href="edit_article/{{article.id}}" class="btn btn-warning">Edit</a>
-                  <a href="#" class="btn btn-danger">Delete</a>
+                <div class="card-body" style="background-color: wheat">
+                        <h3 class="list-group-item" style="background-color: slategray"><a href="article/{{article.id}}" style="text-decoration: none; color: white;">{{article.title}}</a></h3>
+                        
+                        <p class="card-text">{{article.body | safe}}.</p>
+                        <p class="card-text">{{article.create_date}}</p>
+                        <button class="btn" style="background-color: slategray"><a href="{{ ''.join(['http://', article.doc_link])  }}" class="card-link" style="color: white; text-decoration: none">click to see the full article</a></button>
+                                  <hr>
+                  <form action="{{url_for('delete_article', id=article.id)}}" method="post">
+                      <input type="hidden" name="_method" value="DELETE">
+                      <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                        <a href="edit_article/{{article.id}}" class="btn btn-warning">Edit</a>
+                      </div>
+                    </form>
                 </div>
               </div>
               <br>

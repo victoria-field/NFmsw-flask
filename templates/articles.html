@@ -2,10 +2,23 @@
 
 {% block body %}
 <h1>Articles</h1>
-<ul class="list-group">
-    {% for article in articles %}
-        <li class="list-group-item"><a href="article/{{article.id}}">{{article.title}}</a></li>
-    
+
+
+{% for article in articles %}
+
+<div class="card w-75">
+     <div class="card-body" style="background-color: wheat">
+       <h3 class="list-group-item" style="background-color: slategray"><a href="article/{{article.id}}" style="text-decoration: none; color: white;">{{article.title}}</a></h3>
+       <p class="card-text">{{article.body | safe}}.</p>
+       <p class="card-text">{{article.create_date}}</p>
+       <button class="btn" style="background-color: slategray"><a href="{{ ''.join(['http://', article.doc_link])  }}" class="card-link" style="color: white; text-decoration: none">click to see the full article</a></button>
+
+     </div>
+   </div>
+   <br>
+
 {% endfor %}
-</ul>
+
+
+
 {% endblock %}
